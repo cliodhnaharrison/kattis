@@ -1,34 +1,27 @@
-import sys
+n = int(input())
+buses = sorted(map(int, input().split()))
 
-line = sys.stdin.read()
-line = line.split("\n")
-n = line[0]
-line = line[1:-1][0].split()
-line = [int(x) for x in sorted(line)]
+buses.append(10000000000)
+
+chain = 1
+prev = buses[0]
 
 output = []
-link = []
-next = False
-
-for i in range(len(line)):
-    if i < len(line) - 1:
-        if line[i] + 1 == line[i+1]:
-            link.append(line[i])
-        else:
-            if len(link) > 2:
-                link.append(line[i])
-                output.append(str(link[0]) + "-" + str(link[-1]))
-                link = []
-            else:
-                for item in link:
-                    output.append(item)
-                link = []
+i = 1
+while i < len(buses):
+    current = buses[i]
+    if current == prev + 1:
+        chain += 1
     else:
-        if len(link) > 0:
-            output.append(str(link[0]) + "-" + str(link[-1]))
-            link = []
+        if chain >= 3:
+            output.append(str(buses[i-chain]) + "-" + str(buses[i-1]))
+        elif chain == 2:
+            output.append(buses[i-2])
+            output.append(buses[i-1])
         else:
-            output.append(line[i])
+            output.append(buses[i-1])
+        chain = 1
+    prev = current
+    i += 1
 
-for item in output:
-    print item
+print(' '.join([str(i) for i in output]))
