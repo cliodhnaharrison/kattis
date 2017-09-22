@@ -1,26 +1,17 @@
-import sys
+n = int(input())
 
-input = sys.stdin.read()
-lines = input.split("\n")
-lines = lines[1:-1]
+for _ in range(n):
+    line = input().split()
+    p = int(line[1].split("/")[0])
+    q = int(line[1].split("/")[1])
+    tree = []
+    while (p > 1 or q > 1):
+        if p > q:
+            tree.append("1")
+            p -= q
+        else:
+            tree.append("0")
+            q -= p
+    tree.append("1")
 
-for item in lines:
-    root = ["1/1"]
-    p = 1
-    q = 1
-    n = item.split()[0]
-    item = item.split()[1]
-    count = 1
-    while count < 10:
-        if root[-1] == item:
-            print count
-            break
-        root.append(str(p) + "/" + str(p + q))
-        q = p + q
-        root.append(str(p + q) + "/" + str(q))
-        p = p + q
-        count += 1
-    print root
-
-#left child of p/q  is p/(p+q).
-#The right child of label p/q is (p+q)/q.
+    print (line[0], int(''.join(tree[::-1]), base=2))
